@@ -10,17 +10,17 @@ import styles from "./QuizTypeButton.module.scss";
 export const QuizTypeButton = ({
   title,
   subTitle,
-  href,
+  link,
   img,
 }: {
   title: string;
   subTitle: string;
-  href: string;
+  link: string;
   img: string;
 }) => {
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
-    <Link to={href}>
+    <Link to={link}>
       <button className={styles.container}>
         <img src={img} alt="" />
         <div className={styles.content}>

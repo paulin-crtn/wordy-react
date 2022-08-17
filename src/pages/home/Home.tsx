@@ -14,7 +14,7 @@ export const Home = () => {
   return (
     <div className={styles.container}>
       <section className={styles.section}>
-        <div className={styles.logo}>Wordy</div>
+        <div className="logo">Wordy</div>
         <h1>Développe ton vocabulaire en un rien de temps</h1>
         <h2>
           Quelques minutes de libre ? Profites-en pour apprendre ou réviser des
@@ -24,13 +24,13 @@ export const Home = () => {
           <QuizTypeButton
             title="Mode Classique"
             subTitle="Trouve la définition associée au mot proposé"
-            href="quiz/definition"
+            link="quiz/definition"
             img={holiday}
           ></QuizTypeButton>
           <QuizTypeButton
             title="Mode Inversé"
             subTitle="Trouve le mot associé à la définition proposée"
-            href="quiz/word"
+            link="quiz/word"
             img={outerSpace}
           ></QuizTypeButton>
         </div>

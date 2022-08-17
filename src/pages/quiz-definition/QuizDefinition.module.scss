@@ -1,0 +1,31 @@
+.indication {
+  color: #ffffff;
+}
+
+.pulledValue {
+  font-size: 2.3rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.hint {
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.choiceButton {
+  display: block;
+  max-width: 80%;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  text-align: left;
+  color: #000000;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 9999px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
