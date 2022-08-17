@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/home/Home";
+import { QuizDefinition } from "./pages/quiz-definition/QuizDefinition";
+import { QuizWord } from "./pages/quiz-word/QuizWord";
 
 function App() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/quiz/definition`, {
-      method: "POST",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        Authorization: `X-API-Key ${process.env.REACT_APP_API_KEY}`,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((e) => console.log(e));
-  }, []);
-
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="quiz">
+          <Route path="definition" element={<QuizDefinition />} />
+          <Route path="word" element={<QuizWord />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
