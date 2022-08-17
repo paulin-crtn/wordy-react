@@ -22,7 +22,7 @@ export const QuizTypeButton = ({
   return (
     <Link to={link}>
       <button className={styles.container}>
-        <img src={img} alt="" />
+        <img src={img} alt="illustration" />
         <div className={styles.content}>
           <h3 className={styles.title}>{title}</h3>
           <p className={styles.subTitle}>{subTitle}</p>

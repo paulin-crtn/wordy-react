@@ -15,11 +15,26 @@ export const QuizDefinition = () => {
   /* ------------------------------- REACT STATE ------------------------------ */
   const [data, setData] = useState<IQuiz>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pastPulledId, setPastPulledId] = useState<string[]>([]);
+  const [pastChoices, setPastChoices] = useState<string[]>([]);
 
   /* ------------------------------ REACT EFFECT ------------------------------ */
-  useEffect(() => {
+  useEffect(() => getQuiz(), []);
+
+  /* -------------------------------- FUNCTIONS ------------------------------- */
+  function checkChoice(choice: IChoice) {
+    console.log(choice);
+    if (choice.isCorrect) {
+      setPastPulledId([...pastPulledId, data.pulled.documentId]);
+      setPastChoices([]);
+    } else {
+      setPastChoices([...pastChoices, choice.value]);
+    }
+  }
+
+  function getQuiz() {
     setIsLoading(true);
-    getQuizDefinition()
+    getQuizDefinition(pastPulledId)
       .then((response) => response.json())
       .then((data: IQuiz) => {
         setData(data);
@@ -27,11 +42,6 @@ export const QuizDefinition = () => {
       })
       .catch((e) => console.log(e))
       .finally(() => setIsLoading(false));
-  }, []);
-
-  /* -------------------------------- FUNCTIONS ------------------------------- */
-  function checkChoice(choice: IChoice) {
-    console.log(choice);
   }
 
   interface IChoice {
@@ -52,7 +62,7 @@ export const QuizDefinition = () => {
 
       {!data && <div>Aucune donnée</div>}
 
-      {data && (
+      {!isLoading && data && (
         <div>
           <div className={styles.indication}>
             {/** Pulled */}
@@ -72,6 +82,7 @@ export const QuizDefinition = () => {
                 className={styles.choiceButton}
                 key={choice.value}
                 onClick={() => checkChoice(choice)}
+                disabled={pastChoices.includes(choice.value)}
               >
                 {choice.value}
               </button>
