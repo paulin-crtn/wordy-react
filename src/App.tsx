@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/home/Home";
-import { QuizDefinition } from "./pages/quiz-definition/QuizDefinition";
+import { QuizPage } from "./pages/quiz-definition/QuizPage";
 import { QuizWord } from "./pages/quiz-word/QuizWord";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="quiz">
-          <Route path="definition" element={<QuizDefinition />} />
+          <Route path="definition" element={<QuizPage />} />
           <Route path="word" element={<QuizWord />} />
         </Route>
       </Routes>

@@ -1,3 +1,5 @@
+import { IChoice } from "./IChoice";
+
 export interface IQuiz {
   pulled: {
     documentId: string;
@@ -6,5 +8,5 @@ export interface IQuiz {
   synonyms?: string[];
   antonyms?: string[];
   definitions?: string[];
-  choices: { value: string; isCorrect: boolean }[];
+  choices: IChoice[];
 }
