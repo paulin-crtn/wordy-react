@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
-import { QuizTypeButton } from "../../components/QuizTypeButton/QuizTypeButton";
+import { QuizTypeCard } from "../../components/QuizTypeCard/QuizTypeCard";
 import holiday from "../../assets/img/holiday.png";
 import outerSpace from "../../assets/img/outer_space.png";
 import styles from "./Home.module.scss";
@@ -21,18 +21,18 @@ export const Home = () => {
           mots rapidement sous forme de quiz
         </h2>
         <div className={styles.buttons}>
-          <QuizTypeButton
+          <QuizTypeCard
             title="Mode Classique"
             subTitle="Trouve la définition associée au mot proposé"
             link="quiz/definition"
             img={holiday}
-          ></QuizTypeButton>
-          <QuizTypeButton
+          ></QuizTypeCard>
+          <QuizTypeCard
             title="Mode Inversé"
             subTitle="Trouve le mot associé à la définition proposée"
             link="quiz/word"
             img={outerSpace}
-          ></QuizTypeButton>
+          ></QuizTypeCard>
         </div>
       </div>
     </main>

@@ -43,7 +43,6 @@ button {
 
 .button {
   display: block;
-  margin-top: 10px;
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: 400;
@@ -52,7 +51,7 @@ button {
   color: #000000;
   background-color: #ffffff;
   border: none;
-  border-radius: 9999px;
+  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   cursor: pointer;
 }
@@ -62,6 +61,6 @@ button {
 }
 
 .material-symbols-outlined.stats {
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 20;
   font-size: 3rem;
 }

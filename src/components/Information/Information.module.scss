@@ -1,0 +1,18 @@
+.container {
+  text-align: center;
+  figure {
+    margin: 0;
+    padding: 0;
+    img {
+      width: 256px;
+    }
+  }
+  div {
+    margin: 40px auto;
+    color: #ffffff;
+    font-size: 1.2rem;
+  }
+  button {
+    margin: 20px auto 0 auto;
+  }
+}

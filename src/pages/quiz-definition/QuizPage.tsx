@@ -10,6 +10,8 @@ import { getQuizDefinition } from "../../services/quiz";
 import { QuizDefinition } from "./QuizDefinition";
 import styles from "./QuizPage.module.scss";
 import choc from "../../assets/img/choc.png";
+import tired from "../../assets/img/tired.png";
+import { Information } from "../../components/Information/Information";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
@@ -68,8 +70,6 @@ export const QuizPage = () => {
 
   /* -------------------------------- FUNCTION -------------------------------- */
   function checkChoice(choice: IChoice) {
-    console.log(pastChoices);
-
     if (!data) {
       return;
     }
@@ -90,12 +90,17 @@ export const QuizPage = () => {
     }
   }
 
-  function resetGame(pastPulledId: string[]) {
+  function replayGame() {
     setCurrentScore(0);
     setPastChoices([]);
     setLifeRemaining(NB_LIFE);
     setIsGameOver(false);
     nextQuiz(pastPulledId);
+  }
+
+  function resetGame() {
+    localStorage.removeItem("wordy-best-score");
+    window.location.reload();
   }
 
   /* -------------------------------- TEMPLATE -------------------------------- */
@@ -107,11 +112,13 @@ export const QuizPage = () => {
         </Link>
         <div className={styles.stats}>
           <div>
-            <span className="material-symbols-outlined stats">moving</span>
+            <span className="material-symbols-outlined stats">whatshot</span>
             <span>{currentScore}</span>
           </div>
           <div>
-            <span className="material-symbols-outlined stats">stars</span>
+            <span className="material-symbols-outlined stats">
+              vertical_align_top
+            </span>
             <span>{bestScore}</span>
           </div>
           <div>
@@ -125,22 +132,26 @@ export const QuizPage = () => {
         <div className={styles.container}>
           {isLoading && <Loader />}
 
-          {error && !isLoading && <div>{error}</div>}
+          {!isLoading && error && (
+            <Information
+              img={tired}
+              btnText="Réinitialiser le jeu"
+              cb={resetGame}
+              text={error}
+            />
+          )}
 
-          {!error && !isLoading && !data && <div>Aucune donnée</div>}
+          {!isLoading && !error && !data && (
+            <Information
+              img={tired}
+              btnText="Réinitialiser le jeu"
+              cb={resetGame}
+              text="Aucune donnée"
+            />
+          )}
 
           {!isLoading && data && isGameHover && (
-            <div className={styles.information}>
-              <figure>
-                <img src={choc} alt="choc" />
-              </figure>
-              <button
-                className="button"
-                onClick={() => resetGame(pastPulledId)}
-              >
-                Rejouer
-              </button>
-            </div>
+            <Information img={choc} btnText="Rejouer" cb={replayGame} />
           )}
 
           {!isLoading && data && !isGameHover && (
