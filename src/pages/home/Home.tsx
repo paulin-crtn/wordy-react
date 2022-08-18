@@ -12,8 +12,8 @@ import styles from "./Home.module.scss";
 export const Home = () => {
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
-    <div className={styles.container}>
-      <section className={styles.section}>
+    <main className={styles.main}>
+      <div className={styles.container}>
         <div className="logo">Wordy</div>
         <h1>Développe ton vocabulaire en un rien de temps</h1>
         <h2>
@@ -34,7 +34,7 @@ export const Home = () => {
             img={outerSpace}
           ></QuizTypeButton>
         </div>
-      </section>
-    </div>
+      </div>
+    </main>
   );
 };

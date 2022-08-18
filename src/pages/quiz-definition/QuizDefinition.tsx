@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import styles from "./QuizDefinition.module.scss";
@@ -20,6 +20,16 @@ export const QuizDefinition = ({
 }) => {
   /* ------------------------------- REACT STATE ------------------------------ */
   const [pastChoices, setPastChoices] = useState<string[]>([]);
+  const [showHint, setShowHint] = useState<boolean>(false);
+
+  /* ------------------------------- REACT MEMO ------------------------------- */
+  const hasHint: boolean | undefined = useMemo(() => {
+    return (
+      (data.synonyms && data.synonyms.length > 0) ||
+      (data.antonyms && data.antonyms.length > 0) ||
+      (data.definitions && data.definitions.length > 0)
+    );
+  }, [data]);
 
   /* -------------------------------- FUNCTIONS ------------------------------- */
   function checkChoice(choice: IChoice) {
@@ -37,15 +47,30 @@ export const QuizDefinition = ({
       <div className={styles.indication}>
         {/** Pulled */}
         <div className={styles.pulledValue}>{data.pulled.value}</div>
-        {/** Synonyms */}
-        {data.synonyms && data.synonyms.length > 0 && (
-          <div className={styles.hint}>= {data.synonyms.join(", ")}</div>
+
+        {hasHint && !showHint && (
+          <div
+            className={styles.hintButton}
+            onClick={() => setShowHint((showHint) => !showHint)}
+          >
+            Afficher des indices
+          </div>
         )}
-        {/** Antonyms */}
-        {data.antonyms && data.antonyms.length > 0 && (
-          <div className={styles.hint}>≠ {data.antonyms.join(", ")}</div>
+
+        {showHint && (
+          <div>
+            {/** Synonyms */}
+            {data.synonyms && data.synonyms.length > 0 && (
+              <div className={styles.hint}>= {data.synonyms.join(", ")}</div>
+            )}
+            {/** Antonyms */}
+            {data.antonyms && data.antonyms.length > 0 && (
+              <div className={styles.hint}>≠ {data.antonyms.join(", ")}</div>
+            )}
+          </div>
         )}
       </div>
+
       <div className={styles.choices}>
         {data.choices.map((choice: IChoice) => (
           <button

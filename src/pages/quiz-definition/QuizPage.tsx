@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
 import { IQuiz } from "../../interfaces/IQuiz";
@@ -19,14 +19,8 @@ export const QuizPage = () => {
   const [error, setError] = useState<string>();
   const [pastPulledId, setPastPulledId] = useState<string[]>([]);
 
-  /* ------------------------------ REACT EFFECT ------------------------------ */
-  /**
-   * Each time a word or a definition is found, pastPulledId is updated
-   */
-  useEffect(() => getQuiz(), [pastPulledId]);
-
-  /* -------------------------------- FUNCTIONS ------------------------------- */
-  function getQuiz() {
+  /* ----------------------------- REACT CALLBACK ----------------------------- */
+  const nextQuiz = useCallback((pastPulledId: string[]) => {
     setIsLoading(true);
     setError("");
     // Fetch data
@@ -42,30 +36,45 @@ export const QuizPage = () => {
       .then((data: IQuiz) => setData(data))
       .catch((err: Error) => setError(err.message))
       .finally(() => setIsLoading(false));
-  }
+  }, []);
+
+  /* ------------------------------ REACT EFFECT ------------------------------ */
+  /**
+   * Each time a word or a definition is found, pastPulledId is updated
+   */
+  useEffect(() => nextQuiz(pastPulledId), [pastPulledId, nextQuiz]);
 
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
     <div>
-      <header>
+      <header className={styles.header}>
         <Link to="/">
           <div className="logo">Wordy</div>
         </Link>
+        <div className={styles.stats}>
+          <div>score</div>
+          <div>best</div>
+          <div>life</div>
+        </div>
       </header>
 
-      {isLoading && <Loader />}
+      <main className={styles.main}>
+        <div className={styles.container}>
+          {isLoading && <Loader />}
 
-      {error && <div>{error}</div>}
+          {error && <div>{error}</div>}
 
-      {!data && !error && <div>Aucune donnée</div>}
+          {!data && !error && <div>Aucune donnée</div>}
 
-      {!isLoading && data && (
-        <QuizDefinition
-          data={data}
-          pastPulledId={pastPulledId}
-          setPastPulledId={setPastPulledId}
-        />
-      )}
+          {!isLoading && data && (
+            <QuizDefinition
+              data={data}
+              pastPulledId={pastPulledId}
+              setPastPulledId={setPastPulledId}
+            />
+          )}
+        </div>
+      </main>
     </div>
   );
 };
