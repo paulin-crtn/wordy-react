@@ -5,21 +5,22 @@ import { useMemo, useState } from "react";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import styles from "./QuizDefinition.module.scss";
+import equal from "../../assets/img/equal.svg";
+import notEqual from "../../assets/img/not_equal.svg";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
 /* -------------------------------------------------------------------------- */
 export const QuizDefinition = ({
   data,
-  pastPulledId,
-  setPastPulledId,
+  checkChoice,
+  pastChoices,
 }: {
   data: IQuiz;
-  pastPulledId: string[];
-  setPastPulledId: (arg: string[]) => void;
+  checkChoice: (arg: IChoice) => void;
+  pastChoices: string[];
 }) => {
   /* ------------------------------- REACT STATE ------------------------------ */
-  const [pastChoices, setPastChoices] = useState<string[]>([]);
   const [showHint, setShowHint] = useState<boolean>(false);
 
   /* ------------------------------- REACT MEMO ------------------------------- */
@@ -31,16 +32,6 @@ export const QuizDefinition = ({
     );
   }, [data]);
 
-  /* -------------------------------- FUNCTIONS ------------------------------- */
-  function checkChoice(choice: IChoice) {
-    if (choice.isCorrect) {
-      setPastPulledId([...pastPulledId, data.pulled.documentId]);
-      setPastChoices([]);
-    } else {
-      setPastChoices([...pastChoices, choice.value]);
-    }
-  }
-
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
     <div>
@@ -48,33 +39,42 @@ export const QuizDefinition = ({
         {/** Pulled */}
         <div className={styles.pulledValue}>{data.pulled.value}</div>
 
+        {/** Hint */}
         {hasHint && !showHint && (
           <div
             className={styles.hintButton}
             onClick={() => setShowHint((showHint) => !showHint)}
           >
-            Afficher des indices
+            <span className="material-symbols-outlined">contact_support</span>
+            <span className={styles.hintButtonText}>Afficher des indices</span>
           </div>
         )}
 
         {showHint && (
-          <div>
+          <div className={styles.hintWrapper}>
             {/** Synonyms */}
             {data.synonyms && data.synonyms.length > 0 && (
-              <div className={styles.hint}>= {data.synonyms.join(", ")}</div>
+              <div className={styles.hint}>
+                <img src={equal} alt="equal sign" />
+                <span>{data.synonyms.join(", ")}</span>
+              </div>
             )}
             {/** Antonyms */}
             {data.antonyms && data.antonyms.length > 0 && (
-              <div className={styles.hint}>≠ {data.antonyms.join(", ")}</div>
+              <div className={styles.hint}>
+                <img src={notEqual} alt="not equal sign" />
+                <span>{data.antonyms.join(", ")}</span>
+              </div>
             )}
           </div>
         )}
       </div>
 
+      {/** Choices */}
       <div className={styles.choices}>
         {data.choices.map((choice: IChoice) => (
           <button
-            className={styles.choiceButton}
+            className="button"
             key={choice.value}
             onClick={() => checkChoice(choice)}
             disabled={pastChoices.includes(choice.value)}

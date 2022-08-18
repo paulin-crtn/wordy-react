@@ -8,35 +8,35 @@
   text-transform: capitalize;
 }
 
-.hintButton {
+.hintButton,
+.hintWrapper {
   margin-top: 10px;
+  font-weight: 300;
+}
+
+.hintButton {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.hintButtonText {
+  margin-left: 5px;
+  font-size: 1rem;
+  border-bottom: 1px solid #ffffff;
 }
 
 .hint {
-  font-size: 1.6rem;
-  font-weight: 400;
+  margin-bottom: 5px;
+  span {
+    font-size: 1.4rem;
+  }
+  img {
+    width: 17px;
+    margin-right: 10px;
+  }
 }
 
 .choices {
   margin-top: 40px;
-}
-
-.choiceButton {
-  display: block;
-  margin-top: 10px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.2rem;
-  text-align: left;
-  color: #000000;
-  background-color: #ffffff;
-  border: none;
-  border-radius: 9999px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  cursor: pointer;
-}
-
-.choiceButton:disabled {
-  opacity: 0.65;
 }

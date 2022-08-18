@@ -10,6 +10,15 @@
   padding: 0 40px;
 }
 
+.stats {
+  font-size: 2rem;
+  color: #ffffff;
+  div {
+    width: 85px;
+    text-align: right;
+  }
+}
+
 .main {
   display: flex;
   justify-content: flex-start;
@@ -20,4 +29,18 @@
 .container {
   width: 65%;
   margin: -100px auto 0 auto;
+}
+
+.information {
+  text-align: center;
+  button {
+    margin: 20px auto 0 auto;
+  }
+  figure {
+    margin: 0;
+    padding: 0;
+    img {
+      width: 256px;
+    }
+  }
 }
