@@ -4,12 +4,12 @@
 import { QuizTypeCard } from "../../components/QuizTypeCard/QuizTypeCard";
 import holiday from "../../assets/img/holiday.png";
 import outerSpace from "../../assets/img/outer_space.png";
-import styles from "./Home.module.scss";
+import styles from "./HomePage.module.scss";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
 /* -------------------------------------------------------------------------- */
-export const Home = () => {
+export const HomePage = () => {
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
     <main className={styles.main}>

@@ -4,14 +4,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
+import { Information } from "../../components/Information/Information";
+import { Quiz } from "./Quiz";
+import { getQuiz } from "../../services/quiz";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
-import { getQuiz } from "../../services/quiz";
-import { QuizDefinition } from "./QuizDefinition";
 import styles from "./QuizPage.module.scss";
 import choc from "../../assets/img/choc.png";
 import tired from "../../assets/img/tired.png";
-import { Information } from "../../components/Information/Information";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
@@ -27,7 +27,9 @@ export const QuizPage = () => {
   const [error, setError] = useState<string>();
   const [data, setData] = useState<IQuiz>();
   const [pastChoices, setPastChoices] = useState<string[]>([]);
-  const [pastPulledId, setPastPulledId] = useState<string[]>([]);
+  const [pastPulledId, setPastPulledId] = useState<string[]>(
+    JSON.parse(localStorage.getItem("wordy-pulled-ids") || "[]")
+  );
   const [lifeRemaining, setLifeRemaining] = useState<number>(NB_LIFE);
   const [isGameHover, setIsGameOver] = useState<boolean>(false);
   const [currentScore, setCurrentScore] = useState<number>(0);
@@ -96,6 +98,10 @@ export const QuizPage = () => {
         ...pastPulledId,
         data.pulled.documentId,
       ]);
+      localStorage.setItem(
+        "wordy-pulled-ids",
+        JSON.stringify([...pastPulledId, data.pulled.documentId])
+      );
     } else {
       if (lifeRemaining) {
         setPastChoices((pastChoices) => [...pastChoices, choice.value]);
@@ -116,6 +122,7 @@ export const QuizPage = () => {
 
   function resetGame() {
     localStorage.removeItem("wordy-best-score");
+    localStorage.removeItem("wordy-pulled-ids");
     window.location.reload();
   }
 
@@ -171,7 +178,7 @@ export const QuizPage = () => {
           )}
 
           {!isLoading && data && !isGameHover && (
-            <QuizDefinition
+            <Quiz
               data={data}
               checkChoice={checkChoice}
               pastChoices={pastChoices}

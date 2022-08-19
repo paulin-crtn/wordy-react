@@ -4,12 +4,12 @@
 import { useMemo, useState } from "react";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
-import styles from "./QuizDefinition.module.scss";
+import styles from "./Quiz.module.scss";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
 /* -------------------------------------------------------------------------- */
-export const QuizDefinition = ({
+export const Quiz = ({
   data,
   checkChoice,
   pastChoices,
@@ -83,7 +83,7 @@ export const QuizDefinition = ({
             {data.definitions &&
               data.definitions.length > 0 &&
               data.definitions.map((definition) => (
-                <div className={styles.hint}>
+                <div key={definition} className={styles.hint}>
                   <div className="material-symbols-outlined">add_circle</div>
                   <div>{definition}</div>
                 </div>
