@@ -1,6 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
+import { useEffect } from "react";
 import { QuizTypeCard } from "../../components/QuizTypeCard/QuizTypeCard";
 import holiday from "../../assets/img/holiday.png";
 import outerSpace from "../../assets/img/outer_space.png";
@@ -10,6 +11,14 @@ import styles from "./HomePage.module.scss";
 /*                               REACT COMPONENT                              */
 /* -------------------------------------------------------------------------- */
 export const HomePage = () => {
+  /* ------------------------------ REACT EFFECT ------------------------------ */
+  /**
+   * Set the page title
+   */
+  useEffect(() => {
+    document.title = "Wordy";
+  }, []);
+
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
     <main className={styles.main}>

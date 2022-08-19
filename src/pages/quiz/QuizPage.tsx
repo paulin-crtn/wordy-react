@@ -61,12 +61,13 @@ export const QuizPage = () => {
 
   /* ------------------------------ REACT EFFECT ------------------------------ */
   /**
-   * Check the URL param
+   * Check the URL param and set the page title
    */
   useEffect(() => {
     if (quizType !== "definition" && quizType !== "word") {
       navigate("/");
     }
+    document.title = `Find the ${quizType} | Wordy`;
   }, [quizType, navigate]);
 
   /**
