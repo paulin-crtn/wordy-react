@@ -2,11 +2,11 @@
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../components/Loader/Loader";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
-import { getQuizDefinition } from "../../services/quiz";
+import { getQuiz } from "../../services/quiz";
 import { QuizDefinition } from "./QuizDefinition";
 import styles from "./QuizPage.module.scss";
 import choc from "../../assets/img/choc.png";
@@ -19,6 +19,8 @@ import { Information } from "../../components/Information/Information";
 export const QuizPage = () => {
   /* -------------------------------- CONSTANT -------------------------------- */
   const NB_LIFE: number = 5;
+  const { quizType } = useParams();
+  const navigate = useNavigate();
 
   /* ------------------------------- REACT STATE ------------------------------ */
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -34,32 +36,46 @@ export const QuizPage = () => {
   );
 
   /* ----------------------------- REACT CALLBACK ----------------------------- */
-  const nextQuiz = useCallback((pastPulledId: string[]) => {
-    setIsLoading(true);
-    setError("");
-    // Fetch data
-    getQuizDefinition(pastPulledId)
-      .then(async (response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        return response.json().then((data) => {
-          throw new Error(data.error);
-        });
-      })
-      .then((data: IQuiz) => setData(data))
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setIsLoading(false));
-  }, []);
+  const nextQuiz = useCallback(
+    (pastPulledId: string[]) => {
+      setIsLoading(true);
+      setError("");
+      // Fetch data
+      getQuiz(quizType as string, pastPulledId)
+        .then(async (response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          return response.json().then((data) => {
+            throw new Error(data.error);
+          });
+        })
+        .then((data: IQuiz) => setData(data))
+        .catch((err: Error) => setError(err.message))
+        .finally(() => setIsLoading(false));
+    },
+    [quizType]
+  );
 
   /* ------------------------------ REACT EFFECT ------------------------------ */
   /**
-   * Each time a word or a definition is found, pastPulledId is updated
+   * Check the URL param
+   */
+  useEffect(() => {
+    if (quizType !== "definition" && quizType !== "word") {
+      navigate("/");
+    }
+  }, [quizType, navigate]);
+
+  /**
+   * Call nextQuiz each time pastPulledId is updated
+   * (i.e each time a word or a definition is found)
    */
   useEffect(() => nextQuiz(pastPulledId), [pastPulledId, nextQuiz]);
 
   /**
-   * Each time the current score is updated, we check and/or update the best score
+   * Each time the current score is updated,
+   * we check and/or update the best score
    */
   useEffect(() => {
     if (currentScore > bestScore) {
