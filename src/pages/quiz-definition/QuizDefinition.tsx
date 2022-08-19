@@ -5,8 +5,6 @@ import { useMemo, useState } from "react";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import styles from "./QuizDefinition.module.scss";
-import equal from "../../assets/img/equal.svg";
-import notEqual from "../../assets/img/not_equal.svg";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
@@ -15,10 +13,12 @@ export const QuizDefinition = ({
   data,
   checkChoice,
   pastChoices,
+  quizType,
 }: {
   data: IQuiz;
   checkChoice: (arg: IChoice) => void;
   pastChoices: string[];
+  quizType: string;
 }) => {
   /* ------------------------------- REACT STATE ------------------------------ */
   const [showHint, setShowHint] = useState<boolean>(false);
@@ -37,7 +37,14 @@ export const QuizDefinition = ({
     <div>
       <div className={styles.indication}>
         {/** Pulled */}
-        <div className={styles.pulledValue}>{data.pulled.value}</div>
+        <div
+          className={[
+            styles.pulledValue,
+            quizType === "definition" ? styles.capitalize : "",
+          ].join(" ")}
+        >
+          {data.pulled.value}
+        </div>
 
         {/** Hint */}
         {hasHint && !showHint && (
@@ -55,23 +62,42 @@ export const QuizDefinition = ({
             {/** Synonyms */}
             {data.synonyms && data.synonyms.length > 0 && (
               <div className={styles.hint}>
-                <img src={equal} alt="equal sign" />
-                <span>{data.synonyms.join(", ")}</span>
+                <div className="material-symbols-outlined">swap_horiz</div>
+                <div className={styles.capitalize}>
+                  {data.synonyms.join(", ")}
+                </div>
               </div>
             )}
             {/** Antonyms */}
             {data.antonyms && data.antonyms.length > 0 && (
               <div className={styles.hint}>
-                <img src={notEqual} alt="not equal sign" />
-                <span>{data.antonyms.join(", ")}</span>
+                <div className="material-symbols-outlined">
+                  do_not_disturb_on
+                </div>
+                <div className={styles.capitalize}>
+                  {data.antonyms.join(", ")}
+                </div>
               </div>
             )}
+            {/** Definitions */}
+            {data.definitions &&
+              data.definitions.length > 0 &&
+              data.definitions.map((definition) => (
+                <div className={styles.hint}>
+                  <div className="material-symbols-outlined">add_circle</div>
+                  <div>{definition}</div>
+                </div>
+              ))}
           </div>
         )}
       </div>
 
       {/** Choices */}
-      <div className={styles.choices}>
+      <div
+        className={
+          quizType === "word" ? styles.wordChoices : styles.definitionChoices
+        }
+      >
         {data.choices.map((choice: IChoice) => (
           <button
             className="button"

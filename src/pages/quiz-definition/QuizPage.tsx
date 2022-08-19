@@ -175,6 +175,7 @@ export const QuizPage = () => {
               data={data}
               checkChoice={checkChoice}
               pastChoices={pastChoices}
+              quizType={quizType as string}
             />
           )}
         </div>
