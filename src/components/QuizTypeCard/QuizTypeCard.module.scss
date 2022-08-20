@@ -3,7 +3,6 @@
   justify-content: space-between;
   align-items: center;
   max-width: 380px;
-  margin-right: 20px;
   padding: 10px;
   text-align: left;
   background-color: #ffffff;
@@ -24,6 +23,31 @@
       margin: 0;
       font-size: 1.1rem;
       line-height: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .container {
+    max-width: 350px;
+    img {
+      width: 100px;
+    }
+    .content {
+      h3 {
+        font-size: 1.1rem;
+      }
+      p {
+        font-family: 1rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    img {
+      width: 90px;
     }
   }
 }

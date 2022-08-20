@@ -29,7 +29,7 @@ export const HomePage = () => {
           Quelques minutes de libre ? Profites-en pour apprendre ou réviser des
           mots rapidement sous forme de quiz
         </h2>
-        <div className={styles.buttons}>
+        <div className={styles.cards}>
           <QuizTypeCard
             title="Mode Classique"
             subTitle="Trouve la définition associée au mot proposé"

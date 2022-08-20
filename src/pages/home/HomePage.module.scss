@@ -23,6 +23,29 @@
   }
 }
 
-.buttons {
+.cards {
   display: flex;
+}
+
+.cards > :first-child {
+  margin-right: 20px;
+}
+
+@media (max-width: 1000px) {
+  .container {
+    padding: 40px;
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.3rem;
+      line-height: 1.8rem;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .cards {
+    display: block;
+  }
 }

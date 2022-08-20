@@ -133,6 +133,7 @@ export const QuizPage = () => {
       <header className={styles.header}>
         <Link to="/">
           <div className="logo">Wordy</div>
+          <div className="logo-mobile">W</div>
         </Link>
         <div className={styles.stats}>
           <div>
