@@ -66,10 +66,7 @@ button {
 }
 
 .button:disabled {
-  opacity: 0.65;
-  -webkit-appearance: none;
-  -moz-opacity: 0.65; /* Firefox and Mozilla browsers */
-  -webkit-opacity: 0.65; /* WebKit browser e.g. Safari */
+  background: rgba(255, 255, 255, 0.65);
 }
 
 .material-symbols-outlined.stats {
