@@ -132,8 +132,8 @@ export const QuizPage = () => {
     <div>
       <header className={styles.header}>
         <Link to="/">
-          <div className="logo">Wordy</div>
-          <div className="logo-mobile">W</div>
+          <div className={[styles.logo, "logo"].join(" ")}>Wordy</div>
+          <div className={[styles.logoMobile, "logo-mobile"].join(" ")}>W</div>
         </Link>
         <div className={styles.stats}>
           <div>

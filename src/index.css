@@ -24,7 +24,7 @@ a {
 
 a:visited,
 a:focus {
-  color: inherit;
+  color: #000000;
 }
 
 input,
@@ -75,12 +75,6 @@ button {
 }
 
 @media (max-width: 500px) {
-  .logo {
-    display: none;
-  }
-  .logo-mobile {
-    display: inline-block;
-  }
   .material-symbols-outlined.stats {
     font-size: 2.6rem;
   }
