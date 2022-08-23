@@ -1,0 +1,41 @@
+.header,
+.stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+  min-height: 100px;
+  padding: 0 40px;
+}
+
+.stats {
+  font-size: 1.6rem;
+  color: #ffffff;
+  text-align: right;
+  div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-left: 15px;
+  }
+  div > span {
+    flex: 1 1 48px;
+  }
+}
+
+@media (max-width: 500px) {
+  .logo {
+    display: none;
+  }
+  .logoMobile {
+    display: inline-block;
+  }
+  .stats {
+    font-size: 1.4rem;
+    div {
+      margin-left: 10px;
+    }
+  }
+}

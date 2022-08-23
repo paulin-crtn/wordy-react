@@ -2,7 +2,8 @@
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
 import { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Header } from "../../components/Header/Header";
 import { Loader } from "../../components/Loader/Loader";
 import { Information } from "../../components/Information/Information";
 import { Quiz } from "./Quiz";
@@ -130,28 +131,11 @@ export const QuizPage = () => {
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
     <div>
-      <header className={styles.header}>
-        <Link to="/">
-          <div className={[styles.logo, "logo"].join(" ")}>Wordy</div>
-          <div className={[styles.logoMobile, "logo-mobile"].join(" ")}>W</div>
-        </Link>
-        <div className={styles.stats}>
-          <div>
-            <span className="material-symbols-outlined stats">whatshot</span>
-            <span>{currentScore}</span>
-          </div>
-          <div>
-            <span className="material-symbols-outlined stats">
-              vertical_align_top
-            </span>
-            <span>{bestScore}</span>
-          </div>
-          <div>
-            <span className="material-symbols-outlined stats">favorite</span>
-            <span>{lifeRemaining}</span>
-          </div>
-        </div>
-      </header>
+      <Header
+        currentScore={currentScore}
+        bestScore={bestScore}
+        lifeRemaining={lifeRemaining}
+      />
 
       <main className={styles.main}>
         <div className={styles.container}>
