@@ -12,6 +12,6 @@ export const getQuiz = (quizType: string, documentIds: string[]) => {
       "Content-Type": "application/json",
       Authorization: `X-API-Key ${process.env.REACT_APP_API_KEY}`,
     }),
-    body: JSON.stringify(documentIds),
+    body: JSON.stringify({ idsExcluded: documentIds }),
   });
 };
