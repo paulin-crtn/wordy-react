@@ -5,8 +5,7 @@
 }
 
 .stats {
-  padding: 8px 20px;
-  font-size: 1.8rem;
+  padding: 10px 20px;
   color: #ffffff;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 5px;
@@ -16,6 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.8rem;
   &:not(:first-child) {
     margin-left: 20px;
   }
@@ -27,15 +27,19 @@
 }
 
 @media (max-width: 850px) {
-  .statText {
-    display: none;
+  .stats {
+    padding: 10px 15px;
   }
   .stat {
+    font-size: 1.6rem;
     &:not(:first-child) {
-      margin-left: 12px;
+      margin-left: 10px;
     }
   }
   .stat > span {
     margin-right: 3px;
+  }
+  .statText {
+    display: none;
   }
 }

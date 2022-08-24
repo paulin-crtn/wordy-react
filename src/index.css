@@ -71,10 +71,13 @@ button {
 
 .material-symbols-outlined.stats {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 20;
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
 @media (max-width: 500px) {
+  .material-symbols-outlined.stats {
+    font-size: 1.8rem;
+  }
   .logo {
     display: none;
   }
