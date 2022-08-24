@@ -20,22 +20,22 @@ export const Header = ({
   return (
     <header className={styles.header}>
       <Link to="/">
-        <div className={[styles.logo, "logo"].join(" ")}>Wordy</div>
-        <div className={[styles.logoMobile, "logo-mobile"].join(" ")}>W</div>
+        <div className="logo">Wordy</div>
       </Link>
       <div className={styles.stats}>
-        <div>
-          <span className="material-symbols-outlined stats">whatshot</span>
+        <div className={styles.stat}>
+          <span className="material-symbols-outlined stats">track_changes</span>
+          <span className={styles.statText}>Score actuel :</span>
           <span>{currentScore}</span>
         </div>
-        <div>
-          <span className="material-symbols-outlined stats">
-            vertical_align_top
-          </span>
+        <div className={styles.stat}>
+          <span className="material-symbols-outlined stats">stars</span>
+          <span className={styles.statText}>Meilleur score :</span>
           <span>{bestScore}</span>
         </div>
-        <div>
-          <span className="material-symbols-outlined stats">favorite</span>
+        <div className={styles.stat}>
+          <span className="material-symbols-outlined stats">skull</span>
+          <span className={styles.statText}>Vie restante :</span>
           <span>{lifeRemaining}</span>
         </div>
       </div>

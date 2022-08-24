@@ -10,12 +10,12 @@ export const Information = ({
   img,
   btnText,
   cb,
-  text,
+  children,
 }: {
   img: string;
   btnText: string;
   cb: () => void;
-  text?: string;
+  children?: React.ReactNode;
 }) => {
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
@@ -24,7 +24,7 @@ export const Information = ({
         <img src={img} alt="illustration" />
       </figure>
 
-      {text && <div>{text}</div>}
+      {children && <div>{children}</div>}
 
       <button className="button" onClick={cb}>
         {btnText}

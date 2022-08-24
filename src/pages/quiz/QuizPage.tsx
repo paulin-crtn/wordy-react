@@ -11,7 +11,8 @@ import { getQuiz } from "../../services/quiz";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import styles from "./QuizPage.module.scss";
-import choc from "../../assets/img/choc.png";
+import love from "../../assets/img/love.png";
+import scared from "../../assets/img/scared.png";
 import tired from "../../assets/img/tired.png";
 
 /* -------------------------------------------------------------------------- */
@@ -146,8 +147,9 @@ export const QuizPage = () => {
               img={tired}
               btnText="Réinitialiser le jeu"
               cb={resetGame}
-              text={error}
-            />
+            >
+              {error}
+            </Information>
           )}
 
           {!isLoading && !error && !data && (
@@ -155,12 +157,21 @@ export const QuizPage = () => {
               img={tired}
               btnText="Réinitialiser le jeu"
               cb={resetGame}
-              text="Aucune donnée"
-            />
+            >
+              Aucune donnée
+            </Information>
           )}
 
           {!isLoading && data && isGameHover && (
-            <Information img={choc} btnText="Rejouer" cb={replayGame} />
+            <Information
+              img={currentScore === bestScore ? love : scared}
+              btnText="Rejouer"
+              cb={replayGame}
+            >
+              {currentScore === bestScore
+                ? "Félicitation pour ton meilleur score !"
+                : `${currentScore} points ! Tu as déjà fait mieux que ça...`}
+            </Information>
           )}
 
           {!isLoading && data && !isGameHover && (
