@@ -1,12 +1,7 @@
-.header,
 .stats {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.header {
-  padding: 30px 40px;
 }
 
 .stats {
@@ -32,31 +27,15 @@
 }
 
 @media (max-width: 850px) {
-  .header {
-    display: block;
-    align-items: flex-start;
-  }
-  .stats {
-    margin-top: 20px;
+  .statText {
+    display: none;
   }
   .stat {
     &:not(:first-child) {
-      margin-left: 0px;
+      margin-left: 12px;
     }
   }
-}
-
-@media (max-width: 720px) {
-  .stats {
-    display: block;
-    width: fit-content;
-    font-size: 1.6rem;
-  }
-  .stat {
-    justify-content: flex-start;
-    margin: 5px 0;
-  }
-  .statText {
-    font-size: 1rem;
+  .stat > span {
+    margin-right: 3px;
   }
 }

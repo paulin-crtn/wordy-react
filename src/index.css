@@ -74,8 +74,11 @@ button {
   font-size: 2.2rem;
 }
 
-@media (max-width: 720px) {
-  .material-symbols-outlined.stats {
-    font-size: 1.8rem;
+@media (max-width: 500px) {
+  .logo {
+    display: none;
+  }
+  .logo-mobile {
+    display: inline-block;
   }
 }

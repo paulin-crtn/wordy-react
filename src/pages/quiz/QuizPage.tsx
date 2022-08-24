@@ -2,8 +2,8 @@
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Header } from "../../components/Header/Header";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Stats } from "../../components/Stats/Stats";
 import { Loader } from "../../components/Loader/Loader";
 import { Information } from "../../components/Information/Information";
 import { Quiz } from "./Quiz";
@@ -12,7 +12,7 @@ import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import styles from "./QuizPage.module.scss";
 import love from "../../assets/img/love.png";
-import scared from "../../assets/img/scared.png";
+import hug from "../../assets/img/hug.png";
 import tired from "../../assets/img/tired.png";
 
 /* -------------------------------------------------------------------------- */
@@ -132,11 +132,17 @@ export const QuizPage = () => {
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
     <div>
-      <Header
-        currentScore={currentScore}
-        bestScore={bestScore}
-        lifeRemaining={lifeRemaining}
-      />
+      <header className={styles.header}>
+        <Link to="/">
+          <div className="logo">Wordy</div>
+          <div className="logo-mobile">W</div>
+        </Link>
+        <Stats
+          currentScore={currentScore}
+          bestScore={bestScore}
+          lifeRemaining={lifeRemaining}
+        />
+      </header>
 
       <main className={styles.main}>
         <div className={styles.container}>
@@ -164,13 +170,13 @@ export const QuizPage = () => {
 
           {!isLoading && data && isGameHover && (
             <Information
-              img={currentScore === bestScore ? love : scared}
+              img={currentScore === bestScore ? love : hug}
               btnText="Rejouer"
               cb={replayGame}
             >
               {currentScore === bestScore
-                ? "Félicitation pour ton meilleur score !"
-                : `${currentScore} points ! Tu as déjà fait mieux que ça...`}
+                ? `Félicitation pour ton meilleur score de ${bestScore} points !`
+                : `Bien joué pour ton score de ${currentScore} points !`}
             </Information>
           )}
 
