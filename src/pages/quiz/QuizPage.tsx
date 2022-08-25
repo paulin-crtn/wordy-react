@@ -1,19 +1,17 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Stats } from "../../components/Stats/Stats";
-import { Loader } from "../../components/Loader/Loader";
 import { Information } from "../../components/Information/Information";
 import { Quiz } from "./Quiz";
-import { getQuiz } from "../../services/quiz";
+import { buildQuiz } from "../../services/quiz";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import styles from "./QuizPage.module.scss";
 import love from "../../assets/img/love.png";
 import hug from "../../assets/img/hug.png";
-import tired from "../../assets/img/tired.png";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
@@ -25,40 +23,16 @@ export const QuizPage = () => {
   const navigate = useNavigate();
 
   /* ------------------------------- REACT STATE ------------------------------ */
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>();
-  const [data, setData] = useState<IQuiz>();
+  const [data, setData] = useState<IQuiz>(buildQuiz(quizType as string));
   const [pastChoices, setPastChoices] = useState<string[]>([]);
   const [pastPulledId, setPastPulledId] = useState<string[]>(
-    JSON.parse(localStorage.getItem("wordy-pulled-ids") || "[]")
+    JSON.parse(localStorage.getItem("wordy-pulled-words") || "[]")
   );
   const [lifeRemaining, setLifeRemaining] = useState<number>(NB_LIFE);
   const [isGameHover, setIsGameOver] = useState<boolean>(false);
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [bestScore, setBestScore] = useState<number>(
     Number(localStorage.getItem("wordy-best-score")) || 0
-  );
-
-  /* ----------------------------- REACT CALLBACK ----------------------------- */
-  const nextQuiz = useCallback(
-    (pastPulledId: string[]) => {
-      setIsLoading(true);
-      setError("");
-      // Fetch data
-      getQuiz(quizType as string, pastPulledId)
-        .then(async (response) => {
-          if (response.ok) {
-            return response.json();
-          }
-          return response.json().then((data) => {
-            throw new Error(data.error);
-          });
-        })
-        .then((data: IQuiz) => setData(data))
-        .catch((err: Error) => setError(err.message))
-        .finally(() => setIsLoading(false));
-    },
-    [quizType]
   );
 
   /* ------------------------------ REACT EFFECT ------------------------------ */
@@ -71,12 +45,6 @@ export const QuizPage = () => {
     }
     document.title = `Find the ${quizType} | Wordy`;
   }, [quizType, navigate]);
-
-  /**
-   * Call nextQuiz each time pastPulledId is updated
-   * (i.e each time a word or a definition is found)
-   */
-  useEffect(() => nextQuiz(pastPulledId), [pastPulledId, nextQuiz]);
 
   /**
    * Each time the current score is updated,
@@ -97,14 +65,12 @@ export const QuizPage = () => {
     if (choice.isCorrect) {
       setCurrentScore((currentScore) => currentScore + 1);
       setPastChoices([]);
-      setPastPulledId((pastPulledId) => [
-        ...pastPulledId,
-        data.pulled.documentId,
-      ]);
+      setPastPulledId((pastPulledId) => [...pastPulledId, data.pulled]);
       localStorage.setItem(
         "wordy-pulled-ids",
-        JSON.stringify([...pastPulledId, data.pulled.documentId])
+        JSON.stringify([...pastPulledId, data.pulled])
       );
+      setData(buildQuiz(quizType as string));
     } else {
       if (lifeRemaining) {
         setPastChoices((pastChoices) => [...pastChoices, choice.value]);
@@ -120,13 +86,7 @@ export const QuizPage = () => {
     setPastChoices([]);
     setLifeRemaining(NB_LIFE);
     setIsGameOver(false);
-    nextQuiz(pastPulledId);
-  }
-
-  function resetGame() {
-    localStorage.removeItem("wordy-best-score");
-    localStorage.removeItem("wordy-pulled-ids");
-    window.location.reload();
+    setData(buildQuiz(quizType as string));
   }
 
   /* -------------------------------- TEMPLATE -------------------------------- */
@@ -146,29 +106,16 @@ export const QuizPage = () => {
 
       <main className={styles.main}>
         <div className={styles.container}>
-          {isLoading && <Loader />}
-
-          {!isLoading && error && (
-            <Information
-              img={tired}
-              btnText="Réinitialiser le jeu"
-              cb={resetGame}
-            >
-              {error}
-            </Information>
+          {!isGameHover && (
+            <Quiz
+              data={data}
+              checkChoice={checkChoice}
+              pastChoices={pastChoices}
+              quizType={quizType as string}
+            />
           )}
 
-          {!isLoading && !error && !data && (
-            <Information
-              img={tired}
-              btnText="Réinitialiser le jeu"
-              cb={resetGame}
-            >
-              Aucune donnée
-            </Information>
-          )}
-
-          {!isLoading && data && isGameHover && (
+          {isGameHover && (
             <Information
               img={currentScore === bestScore ? love : hug}
               btnText="Rejouer"
@@ -178,15 +125,6 @@ export const QuizPage = () => {
                 ? `Félicitation pour ton meilleur score de ${bestScore} points !`
                 : `Bien joué pour ton score de ${currentScore} points !`}
             </Information>
-          )}
-
-          {!isLoading && data && !isGameHover && (
-            <Quiz
-              data={data}
-              checkChoice={checkChoice}
-              pastChoices={pastChoices}
-              quizType={quizType as string}
-            />
           )}
         </div>
       </main>

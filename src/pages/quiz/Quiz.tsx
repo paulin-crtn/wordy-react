@@ -43,7 +43,7 @@ export const Quiz = ({
             quizType === "definition" ? styles.capitalize : "",
           ].join(" ")}
         >
-          {data.pulled.value}
+          {data.pulled}
         </div>
 
         {/** Hint */}
