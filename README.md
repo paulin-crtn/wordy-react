@@ -17,12 +17,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 2. Run `npm start` for a dev server.
 3. Navigate to `http://localhost:3000/`.
 
-_Note: you won't be able to take the quiz since an API is required._
-
-## API
-
-The API can be found on [Github](https://github.com/paulin-crtn/wordy-express).
-
 ## Deployment
 
 The website is deployed on [Netlify](https://docs.netlify.com/).
