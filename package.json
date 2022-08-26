@@ -22,8 +22,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test": "mocha --require ts-node/register --require mock-local-storage src/test/*.ts --exit"
   },
   "eslintConfig": {
     "extends": [
@@ -44,6 +44,10 @@
     ]
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.184"
+    "@types/chai": "^4.3.3",
+    "@types/lodash": "^4.14.184",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "mock-local-storage": "^1.1.23"
   }
 }

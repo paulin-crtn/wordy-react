@@ -4,14 +4,13 @@
 import _ from "lodash";
 import { IQuiz } from "../interfaces/IQuiz";
 import { IDefinition } from "../interfaces/IDefinition";
-import { data } from "../data";
 import { IWord } from "../interfaces/IWord";
 import { QuizTypeEnum } from "../enum/QuizTypeEnum";
 
 /* -------------------------------------------------------------------------- */
 /*                              PUBLIC FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
-export const getQuiz = (quizType: QuizTypeEnum): IQuiz => {
+export const getQuiz = (quizType: QuizTypeEnum, data: IWord[]): IQuiz => {
   // Get previous pulled words from local storage
   let excludedWords: string[] = JSON.parse(
     localStorage.getItem("wordy-pulled-words") || "[]"
@@ -38,7 +37,10 @@ export const getQuiz = (quizType: QuizTypeEnum): IQuiz => {
     JSON.stringify([...excludedWords, pulledWord.value])
   );
 
+  // Shuffle pulledWord definitions
   const definitions: IDefinition[] = _.shuffle(pulledWord.definitions);
+
+  // Get other words (pulled word excluded)
   const otherWords: IWord[] = _.without(_.shuffle(data), pulledWord);
 
   // Build and return definition quiz

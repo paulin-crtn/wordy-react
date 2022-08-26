@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Stats } from "../../components/Stats/Stats";
 import { Information } from "../../components/Information/Information";
@@ -10,6 +10,7 @@ import { getQuiz } from "../../services/quiz";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import { QuizTypeEnum } from "../../enum/QuizTypeEnum";
+import { data } from "../../data";
 import love from "../../assets/img/love.png";
 import hug from "../../assets/img/hug.png";
 import styles from "./QuizPage.module.scss";
@@ -33,26 +34,26 @@ export const QuizPage = () => {
     Number(localStorage.getItem("wordy-best-score")) || 0
   );
 
+  /* ----------------------------- REACT CALLBACK ----------------------------- */
+  const nextQuiz = useCallback(() => {
+    setQuiz(getQuiz(quizType as QuizTypeEnum, data));
+  }, [quizType]);
+
   /* ------------------------------ REACT EFFECT ------------------------------ */
-  /**
-   * Check the URL param
-   * Set the page title
-   * Get and set the quiz
-   */
   useEffect(() => {
+    // Check the URL param
     if (
       quizType !== QuizTypeEnum.DEFINITION &&
       quizType !== QuizTypeEnum.WORD
     ) {
       navigate("/");
     }
+    // Set the page title
     document.title = `Find the ${quizType} | Wordy`;
-    setQuiz(getQuiz(quizType as QuizTypeEnum));
-  }, [quizType, navigate]);
+    // Get and set the next quiz
+    nextQuiz();
+  }, [quizType, navigate, nextQuiz]);
 
-  /**
-   * Update best score
-   */
   useEffect(() => {
     if (currentScore > bestScore) {
       setBestScore(currentScore);
@@ -65,7 +66,7 @@ export const QuizPage = () => {
     if (choice.isCorrect) {
       setCurrentScore((currentScore) => currentScore + 1);
       setPastChoices([]);
-      setQuiz(getQuiz(quizType as QuizTypeEnum));
+      nextQuiz();
     } else {
       if (lifeRemaining) {
         setPastChoices((pastChoices) => [...pastChoices, choice.value]);
@@ -81,7 +82,7 @@ export const QuizPage = () => {
     setPastChoices([]);
     setLifeRemaining(NB_LIFE);
     setIsGameOver(false);
-    setQuiz(getQuiz(quizType as QuizTypeEnum));
+    nextQuiz();
   }
 
   /* -------------------------------- TEMPLATE -------------------------------- */
