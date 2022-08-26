@@ -11262,4 +11262,24 @@ export const data: IWord[] = [
     value: "frasque",
     definitions: [{ value: "Écart de conduite.", antonyms: [], synonyms: [] }],
   },
+  {
+    value: "repentance",
+    definitions: [
+      {
+        value: "Souvenir douloureux, regret de ses fautes, de ses péchés.",
+        antonyms: [],
+        synonyms: [],
+      },
+    ],
+  },
+  {
+    value: "repentir",
+    definitions: [
+      {
+        value: "Vif regret (d'une faute), accompagné d'un désir de réparation.",
+        antonyms: [],
+        synonyms: ["remord", "contrition"],
+      },
+    ],
+  },
 ];
