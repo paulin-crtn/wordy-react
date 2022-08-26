@@ -1,33 +1,60 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORTS                                  */
 /* -------------------------------------------------------------------------- */
-import { getRandomValue, shuffleArray } from "../utils/array";
+import _ from "lodash";
 import { IQuiz } from "../interfaces/IQuiz";
 import { IDefinition } from "../interfaces/IDefinition";
-import { data } from "../assets/data";
+import { data } from "../data";
 import { IWord } from "../interfaces/IWord";
+import { QuizTypeEnum } from "../enum/QuizTypeEnum";
 
 /* -------------------------------------------------------------------------- */
 /*                              PUBLIC FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
-export const buildQuiz = (quizType: string): IQuiz => {
-  const wordsExcluded = localStorage.getItem("wordy-pulled-words");
-  let words = [...data];
-  if (wordsExcluded) {
-    words = data.filter((word) => wordsExcluded.includes(word.value));
-  }
-  const pulledWord: IWord = getRandomValue(words);
-  const otherWords: IWord[] = shuffleArray(words).slice(0, 3);
+export const getQuiz = (quizType: QuizTypeEnum): IQuiz => {
+  // Get previous pulled words from local storage
+  let excludedWords: string[] = JSON.parse(
+    localStorage.getItem("wordy-pulled-words") || "[]"
+  );
 
-  const definition = getRandomValue(pulledWord.definitions);
-  const quiz: IQuiz = _buildDefinitionQuiz(pulledWord.value, definition);
-  _addChoicesToDefinitionQuiz(quiz, otherWords);
-  shuffleArray(quiz.choices);
+  // Filter previous pulled words
+  let availableWords: IWord[] = data.filter(
+    (word) => !excludedWords.includes(word.value)
+  );
+
+  // Reset the game if there is no words left
+  if (!availableWords.length) {
+    localStorage.removeItem("wordy-pulled-words");
+    excludedWords = [];
+    availableWords = [...data];
+  }
+
+  // Get a random word from availableWords (Fisher-Yates shuffle)
+  const pulledWord: IWord = _.shuffle(availableWords)[0];
+
+  // Set previous pulled words to local storage
+  localStorage.setItem(
+    "wordy-pulled-words",
+    JSON.stringify([...excludedWords, pulledWord.value])
+  );
+
+  const definitions: IDefinition[] = _.shuffle(pulledWord.definitions);
+  const otherWords: IWord[] = _.without(_.shuffle(data), pulledWord);
+
+  // Build and return definition quiz
+  if (quizType === QuizTypeEnum.DEFINITION) {
+    const quiz: IQuiz = _buildDefinitionQuiz(pulledWord.value, definitions[0]);
+    _addChoicesToDefinitionQuiz(quiz, otherWords.slice(0, 2));
+    quiz.choices = _.shuffle(quiz.choices);
+    return quiz;
+  }
+
+  // Build and return word quiz
+  const quiz: IQuiz = _buildWordQuiz(pulledWord.value, definitions);
+  _addChoicesToWordQuiz(quiz, otherWords.slice(0, 3));
+  quiz.choices = _.shuffle(quiz.choices);
   return quiz;
 };
-
-// localStorage.removeItem("wordy-best-score");
-// localStorage.removeItem("wordy-pulled-words");
 
 /* -------------------------------------------------------------------------- */
 /*                              PRIVATE FUNCTIONS                             */
@@ -35,7 +62,7 @@ export const buildQuiz = (quizType: string): IQuiz => {
 const _addChoicesToDefinitionQuiz = (quiz: IQuiz, otherWords: IWord[]) => {
   for (const word of otherWords) {
     quiz.choices.push({
-      value: getRandomValue(word.definitions).value,
+      value: _.shuffle(word.definitions)[0].value,
       isCorrect: false,
     });
   }
@@ -59,23 +86,12 @@ const _buildDefinitionQuiz = (word: string, definition: IDefinition): IQuiz => {
   };
 };
 
-// const _buildWordQuiz = (word: string, definition: IDefinition): IQuiz => {
-//   return {
-//     pulled: definition.value,
-//     definitions: word.definitions
-//       .map((definition: IDefinition) => definition.value)
-//       .filter((value: string) => value != definition.value),
-//     choices: [{ value: word.value, isCorrect: true }],
-//   };
-// };
-
-// const _getQuizWords = (choicesCount: number, wordsExcluded: string[]) => {
-//   const pulledWord: IWord = _getRandomWords(1, wordsExcluded)[0];
-//   const otherWords = _getRandomWords(choicesCount - 1, [pulledWord.value]);
-//   return { pulledWord, otherWords };
-// };
-
-// const _getRandomWords = (size: number, wordsExcluded: string[]) => {
-//   const words: IWord[] = shuffleArray(WORDS);
-//   return words.slice(0, size);
-// };
+const _buildWordQuiz = (word: string, definitions: IDefinition[]): IQuiz => {
+  return {
+    pulled: definitions[0].value,
+    definitions: definitions
+      .slice(1, definitions.length)
+      .map((definition: IDefinition) => definition.value),
+    choices: [{ value: word, isCorrect: true }],
+  };
+};

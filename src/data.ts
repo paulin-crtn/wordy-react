@@ -1,4 +1,4 @@
-import { IWord } from "../interfaces/IWord";
+import { IWord } from "./interfaces/IWord";
 
 export const data: IWord[] = [
   {

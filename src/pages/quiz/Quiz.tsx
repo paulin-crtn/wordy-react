@@ -10,12 +10,12 @@ import styles from "./Quiz.module.scss";
 /*                               REACT COMPONENT                              */
 /* -------------------------------------------------------------------------- */
 export const Quiz = ({
-  data,
+  quiz,
   checkChoice,
   pastChoices,
   quizType,
 }: {
-  data: IQuiz;
+  quiz: IQuiz;
   checkChoice: (arg: IChoice) => void;
   pastChoices: string[];
   quizType: string;
@@ -26,11 +26,11 @@ export const Quiz = ({
   /* ------------------------------- REACT MEMO ------------------------------- */
   const hasHint: boolean | undefined = useMemo(() => {
     return (
-      (data.synonyms && data.synonyms.length > 0) ||
-      (data.antonyms && data.antonyms.length > 0) ||
-      (data.definitions && data.definitions.length > 0)
+      (quiz.synonyms && quiz.synonyms.length > 0) ||
+      (quiz.antonyms && quiz.antonyms.length > 0) ||
+      (quiz.definitions && quiz.definitions.length > 0)
     );
-  }, [data]);
+  }, [quiz]);
 
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
@@ -43,7 +43,7 @@ export const Quiz = ({
             quizType === "definition" ? styles.capitalize : "",
           ].join(" ")}
         >
-          {data.pulled}
+          {quiz.pulled}
         </div>
 
         {/** Hint */}
@@ -60,29 +60,29 @@ export const Quiz = ({
         {showHint && (
           <div className={styles.hintWrapper}>
             {/** Synonyms */}
-            {data.synonyms && data.synonyms.length > 0 && (
+            {quiz.synonyms && quiz.synonyms.length > 0 && (
               <div className={styles.hint}>
                 <div className="material-symbols-outlined">swap_horiz</div>
                 <div className={styles.capitalize}>
-                  {data.synonyms.join(", ")}
+                  {quiz.synonyms.join(", ")}
                 </div>
               </div>
             )}
             {/** Antonyms */}
-            {data.antonyms && data.antonyms.length > 0 && (
+            {quiz.antonyms && quiz.antonyms.length > 0 && (
               <div className={styles.hint}>
                 <div className="material-symbols-outlined">
                   do_not_disturb_on
                 </div>
                 <div className={styles.capitalize}>
-                  {data.antonyms.join(", ")}
+                  {quiz.antonyms.join(", ")}
                 </div>
               </div>
             )}
             {/** Definitions */}
-            {data.definitions &&
-              data.definitions.length > 0 &&
-              data.definitions.map((definition) => (
+            {quiz.definitions &&
+              quiz.definitions.length > 0 &&
+              quiz.definitions.map((definition) => (
                 <div key={definition} className={styles.hint}>
                   <div className="material-symbols-outlined">add_circle</div>
                   <div>{definition}</div>
@@ -98,7 +98,7 @@ export const Quiz = ({
           quizType === "word" ? styles.wordChoices : styles.definitionChoices
         }
       >
-        {data.choices.map((choice: IChoice) => (
+        {quiz.choices.map((choice: IChoice) => (
           <button
             className="button"
             key={choice.value}

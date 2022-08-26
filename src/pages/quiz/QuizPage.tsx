@@ -6,12 +6,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Stats } from "../../components/Stats/Stats";
 import { Information } from "../../components/Information/Information";
 import { Quiz } from "./Quiz";
-import { buildQuiz } from "../../services/quiz";
+import { getQuiz } from "../../services/quiz";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
-import styles from "./QuizPage.module.scss";
+import { QuizTypeEnum } from "../../enum/QuizTypeEnum";
 import love from "../../assets/img/love.png";
 import hug from "../../assets/img/hug.png";
+import styles from "./QuizPage.module.scss";
 
 /* -------------------------------------------------------------------------- */
 /*                               REACT COMPONENT                              */
@@ -23,11 +24,8 @@ export const QuizPage = () => {
   const navigate = useNavigate();
 
   /* ------------------------------- REACT STATE ------------------------------ */
-  const [data, setData] = useState<IQuiz>(buildQuiz(quizType as string));
+  const [quiz, setQuiz] = useState<IQuiz>();
   const [pastChoices, setPastChoices] = useState<string[]>([]);
-  const [pastPulledId, setPastPulledId] = useState<string[]>(
-    JSON.parse(localStorage.getItem("wordy-pulled-words") || "[]")
-  );
   const [lifeRemaining, setLifeRemaining] = useState<number>(NB_LIFE);
   const [isGameHover, setIsGameOver] = useState<boolean>(false);
   const [currentScore, setCurrentScore] = useState<number>(0);
@@ -37,18 +35,23 @@ export const QuizPage = () => {
 
   /* ------------------------------ REACT EFFECT ------------------------------ */
   /**
-   * Check the URL param and set the page title
+   * Check the URL param
+   * Set the page title
+   * Get and set the quiz
    */
   useEffect(() => {
-    if (quizType !== "definition" && quizType !== "word") {
+    if (
+      quizType !== QuizTypeEnum.DEFINITION &&
+      quizType !== QuizTypeEnum.WORD
+    ) {
       navigate("/");
     }
     document.title = `Find the ${quizType} | Wordy`;
+    setQuiz(getQuiz(quizType as QuizTypeEnum));
   }, [quizType, navigate]);
 
   /**
-   * Each time the current score is updated,
-   * we check and/or update the best score
+   * Update best score
    */
   useEffect(() => {
     if (currentScore > bestScore) {
@@ -59,18 +62,10 @@ export const QuizPage = () => {
 
   /* -------------------------------- FUNCTION -------------------------------- */
   function checkChoice(choice: IChoice) {
-    if (!data) {
-      return;
-    }
     if (choice.isCorrect) {
       setCurrentScore((currentScore) => currentScore + 1);
       setPastChoices([]);
-      setPastPulledId((pastPulledId) => [...pastPulledId, data.pulled]);
-      localStorage.setItem(
-        "wordy-pulled-ids",
-        JSON.stringify([...pastPulledId, data.pulled])
-      );
-      setData(buildQuiz(quizType as string));
+      setQuiz(getQuiz(quizType as QuizTypeEnum));
     } else {
       if (lifeRemaining) {
         setPastChoices((pastChoices) => [...pastChoices, choice.value]);
@@ -86,7 +81,7 @@ export const QuizPage = () => {
     setPastChoices([]);
     setLifeRemaining(NB_LIFE);
     setIsGameOver(false);
-    setData(buildQuiz(quizType as string));
+    setQuiz(getQuiz(quizType as QuizTypeEnum));
   }
 
   /* -------------------------------- TEMPLATE -------------------------------- */
@@ -106,9 +101,9 @@ export const QuizPage = () => {
 
       <main className={styles.main}>
         <div className={styles.container}>
-          {!isGameHover && (
+          {quiz && !isGameHover && (
             <Quiz
-              data={data}
+              quiz={quiz}
               checkChoice={checkChoice}
               pastChoices={pastChoices}
               quizType={quizType as string}
