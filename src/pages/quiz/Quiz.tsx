@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { IChoice } from "../../interfaces/IChoice";
 import { IQuiz } from "../../interfaces/IQuiz";
 import styles from "./Quiz.module.scss";
@@ -31,6 +31,9 @@ export const Quiz = ({
       (quiz.definitions && quiz.definitions.length > 0)
     );
   }, [quiz]);
+
+  /* ------------------------------ REACT EFFECT ------------------------------ */
+  useEffect(() => setShowHint(false), [quiz]);
 
   /* -------------------------------- TEMPLATE -------------------------------- */
   return (
