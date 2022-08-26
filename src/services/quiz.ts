@@ -10,51 +10,34 @@ import { QuizTypeEnum } from "../enum/QuizTypeEnum";
 /* -------------------------------------------------------------------------- */
 /*                              PUBLIC FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
-export const getQuiz = (quizType: QuizTypeEnum, data: IWord[]): IQuiz => {
-  // Get previous pulled words from local storage
-  let excludedWords: string[] = JSON.parse(
-    localStorage.getItem("wordy-pulled-words") || "[]"
-  );
+export const getQuiz = (quizType: QuizTypeEnum, words: IWord[]): IQuiz => {
+  let excludedWords: string[] = _getExcludedWords();
+  let availableWords: IWord[] = _getAvailableWords(words, excludedWords);
 
-  // Filter previous pulled words
-  let availableWords: IWord[] = data.filter(
-    (word) => !excludedWords.includes(word.value)
-  );
-
-  // Reset the game if there is no words left
   if (!availableWords.length) {
     localStorage.removeItem("wordy-pulled-words");
     excludedWords = [];
-    availableWords = [...data];
+    availableWords = [...words];
   }
 
-  // Get a random word from availableWords (Fisher-Yates shuffle)
-  const pulledWord: IWord = _.shuffle(availableWords)[0];
+  const pulledWord: IWord = _.shuffle(availableWords)[0]; // Fisher-Yates shuffle
 
-  // Set previous pulled words to local storage
-  localStorage.setItem(
-    "wordy-pulled-words",
-    JSON.stringify([...excludedWords, pulledWord.value])
-  );
+  _setExcludedWords(excludedWords, pulledWord);
 
-  // Shuffle pulledWord definitions
   const definitions: IDefinition[] = _.shuffle(pulledWord.definitions);
+  const otherWords: IWord[] = _.without(_.shuffle(words), pulledWord);
 
-  // Get other words (pulled word excluded)
-  const otherWords: IWord[] = _.without(_.shuffle(data), pulledWord);
+  const quiz: IQuiz =
+    quizType === QuizTypeEnum.DEFINITION
+      ? _buildDefinitionQuiz(pulledWord.value, definitions[0])
+      : _buildWordQuiz(pulledWord.value, definitions);
 
-  // Build and return definition quiz
-  if (quizType === QuizTypeEnum.DEFINITION) {
-    const quiz: IQuiz = _buildDefinitionQuiz(pulledWord.value, definitions[0]);
-    _addChoicesToDefinitionQuiz(quiz, otherWords.slice(0, 2));
-    quiz.choices = _.shuffle(quiz.choices);
-    return quiz;
-  }
+  quizType === QuizTypeEnum.DEFINITION
+    ? _addChoicesToDefinitionQuiz(quiz, otherWords.slice(0, 2))
+    : _addChoicesToWordQuiz(quiz, otherWords.slice(0, 3));
 
-  // Build and return word quiz
-  const quiz: IQuiz = _buildWordQuiz(pulledWord.value, definitions);
-  _addChoicesToWordQuiz(quiz, otherWords.slice(0, 3));
   quiz.choices = _.shuffle(quiz.choices);
+
   return quiz;
 };
 
@@ -96,4 +79,22 @@ const _buildWordQuiz = (word: string, definitions: IDefinition[]): IQuiz => {
       .map((definition: IDefinition) => definition.value),
     choices: [{ value: word, isCorrect: true }],
   };
+};
+
+const _getAvailableWords = (words: IWord[], excludedWords: string[]) => {
+  return words.filter((word) => !excludedWords.includes(word.value));
+};
+
+const _getExcludedWords = (): string[] => {
+  return JSON.parse(localStorage.getItem("wordy-pulled-words") || "[]");
+};
+
+const _setExcludedWords = (
+  excludedWords: string[],
+  pulledWord: IWord
+): void => {
+  localStorage.setItem(
+    "wordy-pulled-words",
+    JSON.stringify([...excludedWords, pulledWord.value])
+  );
 };
