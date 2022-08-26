@@ -11116,13 +11116,12 @@ export const data: IWord[] = [
     ],
   },
   {
-    value: "",
+    value: "contingent",
     definitions: [
       {
-        value:
-          "Qui est de moindre importance, occasionnel, fortuit, incertain.",
+        value: "Qui peut se produire ou non.",
         antonyms: [],
-        synonyms: [],
+        synonyms: ["acccidentel", "éventuel", "occasionnel"],
       },
       {
         value:
