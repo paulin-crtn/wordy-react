@@ -11,13 +11,12 @@ import { QuizTypeEnum } from "../enum/QuizTypeEnum";
 /*                              PUBLIC FUNCTIONS                              */
 /* -------------------------------------------------------------------------- */
 export const getQuiz = (quizType: QuizTypeEnum, words: IWord[]): IQuiz => {
-  let excludedWords: string[] = _getExcludedWords();
-  let availableWords: IWord[] = _getAvailableWords(words, excludedWords);
+  const excludedWords: string[] = _getExcludedWords();
+  const availableWords: IWord[] = _getAvailableWords(words, excludedWords);
 
   if (!availableWords.length) {
     localStorage.removeItem("wordy-pulled-words");
-    excludedWords = [];
-    availableWords = [...words];
+    return getQuiz(quizType, words);
   }
 
   const pulledWord: IWord = _.shuffle(availableWords)[0]; // Fisher-Yates shuffle
