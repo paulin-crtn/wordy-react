@@ -33,6 +33,11 @@ button {
   font-family: inherit;
 }
 
+button {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .button {
   display: block;
   padding: 10px 20px;
