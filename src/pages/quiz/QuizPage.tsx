@@ -2,7 +2,8 @@
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
 import { useEffect, useState, useCallback } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Logo } from "../../components/Logo/Logo";
 import { Stats } from "../../components/Stats/Stats";
 import { Information } from "../../components/Information/Information";
 import { Quiz } from "./Quiz";
@@ -89,10 +90,7 @@ export const QuizPage = () => {
   return (
     <div>
       <header className={styles.header}>
-        <Link to="/">
-          <div className="logo">Wordy</div>
-          <div className="logo-mobile">W</div>
-        </Link>
+        <Logo />
         <Stats
           currentScore={currentScore}
           bestScore={bestScore}

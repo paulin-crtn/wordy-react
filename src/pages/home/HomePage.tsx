@@ -2,6 +2,7 @@
 /*                                   IMPORT                                   */
 /* -------------------------------------------------------------------------- */
 import { useEffect } from "react";
+import { Logo } from "../../components/Logo/Logo";
 import { QuizTypeCard } from "../../components/QuizTypeCard/QuizTypeCard";
 import holiday from "../../assets/img/holiday.png";
 import outerSpace from "../../assets/img/outer_space.png";
@@ -23,7 +24,7 @@ export const HomePage = () => {
   return (
     <main className={styles.main}>
       <div className={styles.container}>
-        <div className="logo">Wordy</div>
+        <Logo />
         <h1>Développe ton vocabulaire en un rien de temps</h1>
         <h2>
           Quelques minutes de libre ? Profites-en pour apprendre ou réviser des

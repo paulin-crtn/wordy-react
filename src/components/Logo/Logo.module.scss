@@ -1,0 +1,25 @@
+.logo,
+.logoMobile {
+  padding: 10px 20px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+.logo {
+  display: inline-block;
+}
+
+.logoMobile {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .logo {
+    display: none;
+  }
+  .logoMobile {
+    display: inline-block;
+  }
+}
