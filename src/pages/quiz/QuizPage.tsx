@@ -28,6 +28,7 @@ export const QuizPage = () => {
   /* ------------------------------- REACT STATE ------------------------------ */
   const [quiz, setQuiz] = useState<IQuiz>();
   const [pastChoices, setPastChoices] = useState<string[]>([]);
+  const [isChoiceChecked, setIsChoiceCheck] = useState<boolean>(false);
   const [lifeRemaining, setLifeRemaining] = useState<number>(NB_LIFE);
   const [isGameHover, setIsGameOver] = useState<boolean>(false);
   const [currentScore, setCurrentScore] = useState<number>(0);
@@ -66,8 +67,12 @@ export const QuizPage = () => {
   function checkChoice(choice: IChoice) {
     if (choice.isCorrect) {
       setCurrentScore((currentScore) => currentScore + 1);
-      setPastChoices([]);
-      nextQuiz();
+      setIsChoiceCheck(true); // Add class to button (animation purpose)
+      setTimeout(() => {
+        setPastChoices([]);
+        setIsChoiceCheck(false);
+        nextQuiz();
+      }, 1000);
     } else {
       if (lifeRemaining) {
         setPastChoices((pastChoices) => [...pastChoices, choice.value]);
@@ -105,6 +110,7 @@ export const QuizPage = () => {
               quiz={quiz}
               checkChoice={checkChoice}
               pastChoices={pastChoices}
+              isChoiceChecked={isChoiceChecked}
               quizType={quizType as string}
             />
           )}
