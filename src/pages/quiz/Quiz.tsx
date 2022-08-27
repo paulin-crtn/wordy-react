@@ -13,11 +13,13 @@ export const Quiz = ({
   quiz,
   checkChoice,
   pastChoices,
+  isChoiceChecked,
   quizType,
 }: {
   quiz: IQuiz;
   checkChoice: (arg: IChoice) => void;
   pastChoices: string[];
+  isChoiceChecked: boolean;
   quizType: string;
 }) => {
   /* ------------------------------- REACT STATE ------------------------------ */
@@ -103,7 +105,10 @@ export const Quiz = ({
       >
         {quiz.choices.map((choice: IChoice) => (
           <button
-            className="button"
+            className={[
+              "button",
+              choice.isCorrect && isChoiceChecked ? "buzz" : "",
+            ].join(" ")}
             key={choice.value}
             onClick={() => checkChoice(choice)}
             disabled={pastChoices.includes(choice.value)}
